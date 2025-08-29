@@ -14,6 +14,7 @@ if ($_GET) {
     $user = $stmt->fetch();
 
     if($user && password_verify($senha, $user['senha'])) {
+        $_SESSION['logado'] = true;
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['nome'];
 

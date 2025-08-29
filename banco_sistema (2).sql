@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 28/08/2025 às 19:44
+-- Tempo de geração: 29/08/2025 às 15:25
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.1.25
 
@@ -40,7 +40,26 @@ CREATE TABLE `contas` (
 --
 
 INSERT INTO `contas` (`id`, `usuario_id`, `numero_conta`, `saldo`, `criado_em`) VALUES
-(1, 1, '0001-01', 1000.00, '2025-08-28 16:56:45');
+(1, 1, '0001-01', 1000.00, '2025-08-28 16:56:45'),
+(14, 4, '0002-01', 0.00, '2025-08-29 13:24:35');
+
+--
+-- Acionadores `contas`
+--
+DELIMITER $$
+CREATE TRIGGER `gerar_numero_conta` BEFORE INSERT ON `contas` FOR EACH ROW BEGIN
+  DECLARE novo_numero VARCHAR(20);
+
+  -- Pega o último número de conta
+  SELECT LPAD(IFNULL(MAX(id)+1, 1), 4, '0')
+  INTO novo_numero
+  FROM contas;
+
+  -- Define o número no formato "0001-01"
+  SET NEW.numero_conta = CONCAT(novo_numero, '-01');
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -121,7 +140,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `contas`
 --
 ALTER TABLE `contas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de tabela `transacoes`
