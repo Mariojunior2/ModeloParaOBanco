@@ -7,6 +7,7 @@ include '../includes/crud.php';
 $usuario_id = $_SESSION['user_id'];
 $logado = $_SESSION['logado'];
 
+
 $conta = LerConta($usuario_id);
 if($logado == false) {
     header('Location: ../../index.php');
@@ -25,7 +26,11 @@ if($logado == false) {
         <input type="submit" value="sim">
     </form>
     <button><a href="../function/loginLogout.php">nao</a></button><br>
-    <?php endif ?>
+    <?php else: ?>
+        <h3>Conta: <?php echo $conta['numero_conta'] ?></h3>
+        <h3>Saldo: <?php echo "R$" . $conta['saldo'] ?></h3>
+
+<?php endif ?>
 <a href="../function/loginLogout.php">Deseja sair clique aqui!</a>
 <?php 
 include '../includes/footer.php'; 
